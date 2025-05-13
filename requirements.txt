@@ -1,0 +1,6 @@
+flask
+flask-sqlalchemy
+pytubefix
+gunicorn
+werkzeug
+email-validator

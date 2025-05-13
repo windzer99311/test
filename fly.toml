@@ -1,0 +1,26 @@
+app = "youtube-downloader"  # You'll need to use a unique name
+
+[build]
+  builder = "paketobuildpacks/builder:base"
+
+[env]
+  PORT = "8080"
+  TEMP_DIR = "/tmp/youtube-downloads"
+  SESSION_SECRET = "change-this-to-a-random-string"
+
+[http_service]
+  internal_port = 8080
+  force_https = true
+
+[[services.ports]]
+  handlers = ["http"]
+  port = 80
+  force_https = true
+
+[[services.ports]]
+  handlers = ["tls", "http"]
+  port = 443
+
+[mounts]
+  source = "youtube_downloader_data"
+  destination = "/tmp"
