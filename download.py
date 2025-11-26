@@ -1,19 +1,21 @@
-import requests , streamlit as st
+import streamlit as st
 from pytubefix import YouTube
 
-
 def main():
-    st.title("YouTube Video Downloader")
+    st.title("YouTube URL Extractor")
+
     url = st.text_input("Enter YouTube URL")
-    click = st.button("Download Video")
+    click = st.button("Get URL")
 
-    if url:
-        if click:
-            yt = YouTube(url)
-            streaming_url = yt.streams.get_lowest_resolution().url
+    if url and click:
+        yt = YouTube(url, use_oauth=False, allow_oauth_cache=False)
 
-            st.write(streaming_url)
-    else:
-        st.write("Enter YouTube URL")
+        # Try to get a stable (non-cipher) streaming URL
+        stream = yt.streams.filter(progressive=True, file_extension="mp4").first()
+
+        if stream:
+            st.write(stream.url)   # print the URL
+        else:
+            st.write("No stable streaming URL available for this video.")
 
 main()
