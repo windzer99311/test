@@ -1,5 +1,6 @@
-import requests, streamlit as st, os, time
+import requests , streamlit as st
 from pytubefix import YouTube
+
 
 def main():
     st.title("YouTube Video Downloader")
@@ -9,23 +10,9 @@ def main():
     if url:
         if click:
             yt = YouTube(url)
-            stream = yt.streams.get_lowest_resolution()
+            streaming_url = yt.streams.get_lowest_resolution().url
 
-            # Unique filename to avoid Windows lock
-            filename = f"video_{int(time.time())}.mp4"
-
-            stream.download(filename=filename)
-
-            st.success("Video downloaded!")
-
-            with open(filename, "rb") as f:
-                st.download_button(
-                    label="Save to device",
-                    data=f,
-                    file_name=filename,
-                    mime="video/mp4"
-                )
-
+            st.write(streaming_url)
     else:
         st.write("Enter YouTube URL")
 
